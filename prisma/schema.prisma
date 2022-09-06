@@ -1,29 +1,48 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider             = "mysql"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-model Product {
-    id          Int       @id @default(autoincrement())
-    name        String
-    description String
-    price       Decimal
-    image       String
-    category    Category? @relation(fields: [category_id], references: [id])
-    category_id Int
-
-    @@index([category_id])
+model accounts {
+  id              Int                @id
+  flow_type       accounts_flow_type
+  name            String             @default("") @db.VarChar(20)
+  nome            String             @default("") @db.VarChar(20)
+  journal_entries journal_entries[]
 }
 
-model Category {
-    id          Int       @id @default(autoincrement())
-    name        String
-    description String
-    products    Product[]
+model apartments {
+  id     Int    @id
+  floor  Int    @default(0)
+  tenant String @default("") @db.VarChar(255)
+}
+
+model configurations {
+  id                  Int      @id
+  valid_from          DateTime @db.Date
+  stairs_cleaning_fee Decimal  @default(0.00) @db.Decimal(10, 2)
+  cleanings_per_month Int      @default(2)
+  monthly_dues        Decimal  @default(0.00) @db.Decimal(10, 2)
+}
+
+model journal_entries {
+  id           Int       @id @default(autoincrement())
+  date         DateTime  @db.Date
+  debit        Decimal   @default(0.00) @db.Decimal(10, 2)
+  credit       Decimal   @default(0.00) @db.Decimal(10, 2)
+  account      accounts? @relation(fields: [account_id], references: [id])
+  account_id   Int
+  apartment_id Int?
+  description  String?   @db.VarChar(255)
+}
+
+enum accounts_flow_type {
+  debit
+  credit
 }
