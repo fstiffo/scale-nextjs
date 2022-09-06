@@ -2,7 +2,7 @@ import Head from 'next/head';
 import JournalEntry from '../components/JournalEntry';
 import prisma from '../lib/prisma';
 
-export default function Home({ journal_entries }) {
+export default function Home({ JournalEntries }) {
   return (
     <div>
       <Head>
@@ -17,8 +17,8 @@ export default function Home({ journal_entries }) {
           🔥 Shop from the hottest items in the world 🔥
         </p>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-items-center  gap-4">
-          {journal_entries.map((journal_entry) => (
-            <JournalEntry journal_entry={journal_entry} key={journal_entry.id} />
+          {JournalEntries.map((JournalEntry) => (
+            <JournalEntry JournalEntry={JournalEntry} key={JournalEntry.id} />
           ))}
         </div>
       </main>
@@ -30,20 +30,20 @@ export default function Home({ journal_entries }) {
 
 export async function getStaticProps(context) {
   console.log("Prisma: ", prisma);
-  const data = await prisma.journal_entries.findMany({
+  const data = await prisma.JournalEntry.findMany({
     include: {
       account: true,
     },
   });
 
   //convert decimal value to string to pass through as json
-  const journal_entries = data.map((journal_entry) => ({
-    ...journal_entry,
-    debit: journal_entry.debit.toString(),
-    credit: journal_entry.credit.toString(),
-    date: journal_entry.date.toString()
+  const JournalEntries = data.map((JournalEntry) => ({
+    ...JournalEntry,
+    debit: JournalEntry.debit.toString(),
+    credit: JournalEntry.credit.toString(),
+    date: JournalEntry.date.toString()
   }));
   return {
-    props: { journal_entries },
+    props: { JournalEntries },
   };
 }
