@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import Product from '../components/Product';
+import JournalEntry from '../components/JournalEntry';
 import prisma from '../lib/prisma';
 
-export default function Home({ products }) {
+export default function Home({ journal_entries }) {
   return (
     <div>
       <Head>
@@ -17,8 +17,8 @@ export default function Home({ products }) {
           🔥 Shop from the hottest items in the world 🔥
         </p>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-items-center  gap-4">
-          {products.map((product) => (
-            <Product product={product} key={product.id} />
+          {journal_entries.map((journal_entry) => (
+            <JournalEntry journal_entry={journal_entry} key={journal_entry.id} />
           ))}
         </div>
       </main>
@@ -29,18 +29,21 @@ export default function Home({ products }) {
 }
 
 export async function getStaticProps(context) {
-  const data = await prisma.product.findMany({
+  console.log("Prisma: ", prisma);
+  const data = await prisma.journal_entries.findMany({
     include: {
-      category: true,
+      account: true,
     },
   });
 
   //convert decimal value to string to pass through as json
-  const products = data.map((product) => ({
-    ...product,
-    price: product.price.toString(),
+  const journal_entries = data.map((journal_entry) => ({
+    ...journal_entry,
+    debit: journal_entry.debit.toString(),
+    credit: journal_entry.credit.toString(),
+    date: journal_entry.date.toString()
   }));
   return {
-    props: { products },
+    props: { journal_entries },
   };
 }
