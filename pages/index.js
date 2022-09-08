@@ -9,6 +9,7 @@ export default function Home({ JournalEntries }) {
         <title>PlanetScale Next.js Quickstart</title>
         <meta name="description" content="PlanetScale Quickstart for Next.js" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
       </Head>
 
       <main className="p-10 mx-auto max-w-4xl">
