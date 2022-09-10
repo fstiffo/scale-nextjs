@@ -1,3 +1,6 @@
-module.exports = {
+const withTM = require('next-transpile-modules')(['react-daisyui'])
+
+module.exports = withTM({
+  //... your content here
   reactStrictMode: true,
-}
+})

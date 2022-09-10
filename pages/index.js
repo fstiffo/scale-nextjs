@@ -99,9 +99,8 @@ export default function Home() {
                     onClick={decreaseMonth}
                     disabled={prevMonthButtonDisabled}
                     type="button"
-                    className={`
-                                            ${prevMonthButtonDisabled && 'cursor-not-allowed opacity-50'}
-                                            inline-flex p-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500
+                    className={`${prevMonthButtonDisabled && 'cursor-not-allowed opacity-50'}
+                    inline-flex p-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500
                                         `}
                   >
                     <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
