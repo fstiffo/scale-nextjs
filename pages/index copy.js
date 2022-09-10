@@ -31,7 +31,7 @@ export default function Home({ JournalEntries }) {
 
 export async function getStaticProps(context) {
   console.log("Prisma: ", prisma);
-  const data = await prisma.JournalEntry.findMany({
+  const data = await prisma.journalEntry.findMany({
     include: {
       account: true,
     },
