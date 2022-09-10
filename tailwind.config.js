@@ -4,11 +4,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        // sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      },
-    },
-    plugins: [require("daisyui")],
-  }
+    extend: {},
+  },
+  plugins: [
+    require("daisyui"),
+    require("@tailwindcss/forms")({
+      strategy: 'class',
+    })],
 }
