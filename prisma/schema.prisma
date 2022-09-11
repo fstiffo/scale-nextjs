@@ -22,6 +22,7 @@ model Apartment {
   floor            Int              @default(0)
   tenant           String           @default("") @db.VarChar(255)
   monthly_payments MonthlyPayment[]
+  journal_entries  JournalEntry[]
 }
 
 model Configuration {
@@ -33,14 +34,15 @@ model Configuration {
 }
 
 model JournalEntry {
-  id           Int      @id @default(autoincrement())
-  date         DateTime @db.Date
-  debit        Decimal  @default(0.00) @db.Decimal(10, 2)
-  credit       Decimal  @default(0.00) @db.Decimal(10, 2)
-  account      Account? @relation(fields: [account_id], references: [id])
+  id           Int        @id @default(autoincrement())
+  date         DateTime   @db.Date
+  debit        Decimal    @default(0.00) @db.Decimal(10, 2)
+  credit       Decimal    @default(0.00) @db.Decimal(10, 2)
+  account      Account?   @relation(fields: [account_id], references: [id])
   account_id   Int
+  apartment    Apartment? @relation(fields: [apartment_id], references: [id])
   apartment_id Int?
-  description  String?  @db.VarChar(255)
+  description  String?    @db.VarChar(255)
 }
 
 model MonthlyPayment {
