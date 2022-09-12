@@ -53,6 +53,8 @@ model MonthlyPayment {
   apartment    Apartment @relation(fields: [apartment_id], references: [id])
   apartment_id Int
   amount       Decimal   @default(0.00) @db.Decimal(10, 2)
+
+  @@unique([month, year, apartment_id], map: "MonthlyPayment_month_year_apartment_id_unique_constraint")
 }
 
 enum AccountFlowType {
