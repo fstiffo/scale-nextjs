@@ -43,6 +43,7 @@ model JournalEntry {
   apartment    Apartment? @relation(fields: [apartment_id], references: [id])
   apartment_id Int?
   description  String?    @db.VarChar(255)
+  booked       Boolean    @default(false)
 }
 
 model MonthlyPayment {
