@@ -2,16 +2,16 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 // Update monthly payments for apartment_id 
-const updateFirstUnbooked = async (apartment_id) => {
+const updateFirstUnbooked = async (apartment_id: number | null) => {
     try {
-        let { monthly_dues, valid_from } = await prisma.configuration.findFirst({
+        let { monthly_dues_str, valid_from } = await prisma.configuration.findFirst({
             select: { monthly_dues: true, valid_from: true },
             orderBy: { valid_from: "desc" }
         });
-        monthly_dues = Number(monthly_dues);
+        const monthly_dues = parseFloat(monthly_dues_str);
 
         // Not-booked-yet dues payments of apartment `apartment_id`
-        let { id, credit } = await prisma.journalEntry.findFirst({
+        let { id, credit_str } = await prisma.journalEntry.findFirst({
             orderBy: { date: "asc" },
             where: {
                 AND: [
@@ -20,7 +20,7 @@ const updateFirstUnbooked = async (apartment_id) => {
             },
             select: { id: true, credit: true }
         });
-        credit = Number(credit);
+        let credit = parseFloat(credit_str);
 
 
         console.log("Booking dues payment id: ", id, ", for apartment_id: ", apartment_id, ", credit: €", credit);
