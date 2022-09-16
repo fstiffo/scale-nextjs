@@ -164,3 +164,5 @@ const ButtonInput = forwardRef(({ value, onClick }, ref) => (
     {format(new Date(value), 'dd MMMM yyyy')}
   </button>
 ))
+
+ButtonInput.displayName = "ButtonInput";
