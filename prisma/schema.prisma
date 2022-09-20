@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider             = "mysql"
+  provider             = "cockroachdb"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
@@ -12,15 +12,15 @@ datasource db {
 model Account {
   id              Int             @id
   flow_type       AccountFlowType
-  name            String          @default("") @db.VarChar(20)
-  nome            String          @default("") @db.VarChar(20)
+  name            String          @default("") @db.String(20)
+  nome            String          @default("") @db.String(20)
   journal_entries JournalEntry[]
 }
 
 model Apartment {
   id               Int              @id
   floor            Int              @default(0)
-  tenant           String           @default("") @db.VarChar(255)
+  tenant           String           @default("") @db.String(20)
   monthly_payments MonthlyPayment[]
   journal_entries  JournalEntry[]
 }
@@ -34,7 +34,7 @@ model Configuration {
 }
 
 model JournalEntry {
-  id           Int        @id @default(autoincrement())
+  id           Int        @id @default(sequence())
   date         DateTime   @db.Date
   debit        Decimal    @default(0.00) @db.Decimal(10, 2)
   credit       Decimal    @default(0.00) @db.Decimal(10, 2)
@@ -42,12 +42,12 @@ model JournalEntry {
   account_id   Int
   apartment    Apartment? @relation(fields: [apartment_id], references: [id])
   apartment_id Int?
-  description  String?    @db.VarChar(255)
+  description  String?    @db.String(40)
   booked       Boolean    @default(false)
 }
 
 model MonthlyPayment {
-  id           Int       @id @default(autoincrement())
+  id           Int       @id @default(sequence())
   month        Int       @default(0)
   year         Int       @default(0)
   apartment    Apartment @relation(fields: [apartment_id], references: [id])
